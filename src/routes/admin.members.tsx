@@ -10,6 +10,7 @@ import { Plus, Pencil, Trash2, Star } from "lucide-react";
 import { toast } from "sonner";
 import { gdriveImage } from "@/lib/gdrive";
 import { adminDelete, adminError, adminInsert, adminList, adminUpdate } from "@/lib/adminApi";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/members")({ component: AdminMembers });
 
@@ -109,7 +110,7 @@ function AdminMembers() {
           <div className="space-y-3">
             <div><Label>Nama *</Label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
             <div><Label>Role / Divisi</Label><Input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Futsal Division" /></div>
-            <div><Label>Foto — Google Drive link</Label><Input value={form.photo_url} onChange={(e) => setForm({ ...form, photo_url: e.target.value })} placeholder="https://drive.google.com/file/d/..." /></div>
+            <ImageUpload label="Foto Member" value={form.photo_url} onChange={(url) => setForm({ ...form, photo_url: url })} aspect="aspect-square" rounded="full" className="mx-auto max-w-[180px]" />
             <div><Label>Quote</Label><Textarea value={form.quote} onChange={(e) => setForm({ ...form, quote: e.target.value })} rows={2} /></div>
             <div className="grid grid-cols-2 gap-3">
               <div><Label>Posisi</Label><Input type="number" value={form.position} onChange={(e) => setForm({ ...form, position: Number(e.target.value) })} /></div>

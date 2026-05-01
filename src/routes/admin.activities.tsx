@@ -10,6 +10,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { gdriveImage } from "@/lib/gdrive";
 import { adminDelete, adminError, adminInsert, adminList, adminUpdate } from "@/lib/adminApi";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/activities")({ component: AdminActivities });
 
@@ -111,7 +112,7 @@ function AdminActivities() {
             <div><Label>Slug (otomatis dari nama bila kosong)</Label><Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="futsal" /></div>
             <div><Label>Deskripsi</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
             <div><Label>Icon (emoji atau nama)</Label><Input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} placeholder="⚽ atau Bike" /></div>
-            <div><Label>Cover Image — Google Drive link</Label><Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://drive.google.com/file/d/..." /></div>
+            <ImageUpload label="Cover Image" value={form.image_url} onChange={(url) => setForm({ ...form, image_url: url })} aspect="aspect-video" />
             <div><Label>Posisi (urutan)</Label><Input type="number" value={form.position} onChange={(e) => setForm({ ...form, position: Number(e.target.value) })} /></div>
           </div>
           <DialogFooter>
