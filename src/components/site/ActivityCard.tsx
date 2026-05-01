@@ -14,7 +14,7 @@ export function ActivityCard({ Icon, title, description, variant = "lime", tint 
   const cardBg = tint === "cream" ? "bg-cream" : "bg-card";
   const link = variant === "lime" ? "text-[oklch(0.55_0.18_125)]" : "text-navy";
   return (
-    <div className={`group flex flex-col gap-4 rounded-3xl ${cardBg} p-6 shadow-soft transition hover:-translate-y-1`}>
+    <div className={`group hover-lift animate-fade-up flex flex-col gap-4 rounded-3xl ${cardBg} p-6 shadow-soft`}>
       <div className={`grid h-14 w-14 place-items-center rounded-full ${iconBg}`}>
         <Icon className="h-7 w-7" />
       </div>

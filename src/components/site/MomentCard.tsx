@@ -6,7 +6,7 @@ interface Props {
 }
 export function MomentCard({ category, title, date, gradient }: Props) {
   return (
-    <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft">
+    <div className="group hover-lift animate-scale-in relative aspect-[4/3] overflow-hidden rounded-2xl shadow-soft">
       <div className={`absolute inset-0 ${gradient}`} />
       <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
       {category && (
