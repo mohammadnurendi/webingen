@@ -41,6 +41,10 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Ingenious Community — Learn, Grow, Connect" },
+      { name: "twitter:description", content: "Ingenious adalah komunitas tempat bergerak, bertumbuh, dan memberi manfaat bersama melalui kegiatan positif." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/8078ced3-d777-42a7-938e-645ac8ffd84f" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/8078ced3-d777-42a7-938e-645ac8ffd84f" },
     ],
     links: [
       {
