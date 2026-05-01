@@ -1,9 +1,7 @@
-// Convert Google Drive share/view links to a direct image URL we can <img> render.
-// Accepts:
-//  - https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-//  - https://drive.google.com/open?id=FILE_ID
-//  - https://drive.google.com/uc?id=FILE_ID
-//  - already-direct URLs (returned as-is)
+// Legacy helper kept for backward compatibility.
+// Images are now uploaded directly to Lovable Cloud Storage; URLs are used as-is.
+// Old Google Drive share links are still converted to a direct image URL so
+// existing data continues to render.
 export function gdriveImage(input: string | null | undefined): string {
   if (!input) return "";
   const url = input.trim();
