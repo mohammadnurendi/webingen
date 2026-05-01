@@ -11,6 +11,7 @@ import { Plus, Pencil, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { gdriveImage } from "@/lib/gdrive";
 import { adminDelete, adminError, adminInsert, adminList, adminUpdate } from "@/lib/adminApi";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/moments")({ component: AdminMoments });
 
@@ -119,7 +120,7 @@ function AdminMoments() {
     <div>
       <PageHeader
         title="Moments"
-        description="Upload foto kegiatan (link Google Drive). Maksimal 5 foto per moment, ditampilkan sebagai carousel."
+        description="Upload foto kegiatan dari perangkat. Maksimal 5 foto per moment, ditampilkan sebagai carousel."
         action={<Button onClick={openNew} className="bg-navy text-navy-foreground"><Plus className="mr-2 h-4 w-4" /> Tambah Moment</Button>}
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,20 +173,21 @@ function AdminMoments() {
               <div className="flex items-center justify-between">
                 <Label>Foto Carousel (maks {MAX_PHOTOS})</Label>
                 <Button type="button" variant="outline" size="sm" onClick={addPhoto} disabled={photoLinks.length >= MAX_PHOTOS}>
-                  <Plus className="mr-1 h-3 w-3" /> Foto
+                  <Plus className="mr-1 h-3 w-3" /> Slot Foto
                 </Button>
               </div>
-              <div className="mt-2 space-y-2">
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {photoLinks.map((url, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="w-5 text-xs font-bold text-muted-foreground">{i + 1}</span>
-                    <Input value={url} onChange={(e) => updatePhoto(i, e.target.value)} placeholder="https://drive.google.com/file/d/..." />
-                    {url && <img src={gdriveImage(url)} alt="" className="h-9 w-9 rounded object-cover" />}
-                    <button type="button" onClick={() => removePhoto(i)} className="rounded p-1.5 hover:bg-rose-50"><X className="h-4 w-4 text-rose-600" /></button>
+                  <div key={i} className="relative">
+                    <span className="absolute left-1.5 top-1.5 z-10 grid h-5 w-5 place-items-center rounded-full bg-navy text-[10px] font-bold text-navy-foreground">{i + 1}</span>
+                    <button type="button" onClick={() => removePhoto(i)} aria-label="Remove" className="absolute right-1.5 top-1.5 z-10 rounded-full bg-rose-600/90 p-1 text-white hover:bg-rose-600">
+                      <X className="h-3 w-3" />
+                    </button>
+                    <ImageUpload value={url} onChange={(u) => updatePhoto(i, u)} aspect="aspect-square" />
                   </div>
                 ))}
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">Pastikan file di Google Drive di-set "Anyone with the link can view".</p>
+              <p className="mt-2 text-xs text-muted-foreground">Klik kotak untuk upload. Foto akan ditampilkan sebagai carousel di publik.</p>
             </div>
           </div>
           <DialogFooter>
