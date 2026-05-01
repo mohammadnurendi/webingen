@@ -142,6 +142,56 @@
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .text-balance { text-wrap: balance; }
+
+  .animate-fade-in { animation: fade-in 0.6s ease-out both; }
+  .animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-scale-in { animation: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-slide-right { animation: slide-right 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .animate-blob { animation: blob 14s ease-in-out infinite; }
+
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-500 { animation-delay: 0.5s; }
+
+  .hover-lift { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -16px oklch(0.27 0.09 255 / 0.25); }
+
+  .story-link { position: relative; display: inline-block; }
+  .story-link::after {
+    content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 100%;
+    background: var(--lime); transform: scaleX(0); transform-origin: right;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .story-link:hover::after { transform: scaleX(1); transform-origin: left; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -18px) scale(1.08); }
+  66% { transform: translate(-16px, 12px) scale(0.95); }
 }
 
 /* Decorative blob shapes for hero sections */
