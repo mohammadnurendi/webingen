@@ -4,10 +4,10 @@ import {
   Briefcase, GraduationCap, HandHeart, Leaf, Megaphone, type LucideIcon,
 } from "lucide-react";
 // Lucide includes a soccer ball as `Volleyball`/`CircleDot`; use a custom label match
-import { Volleyball } from "lucide-react";
+import { Goal } from "lucide-react";
 
 const map: Array<{ keys: string[]; Icon: LucideIcon }> = [
-  { keys: ["futsal", "soccer", "bola", "football"], Icon: Volleyball },
+  { keys: ["futsal", "soccer", "bola", "football"], Icon: Goal },
   { keys: ["coding", "code", "programming", "developer", "tech"], Icon: Code },
   { keys: ["music", "musik", "band", "song"], Icon: Music },
   { keys: ["photo", "foto", "camera", "fotografi"], Icon: Camera },
