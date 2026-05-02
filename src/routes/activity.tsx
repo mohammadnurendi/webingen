@@ -35,7 +35,7 @@ function ActivityPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activities.map((a, i) => (
               <Link key={a.id} to="/activity/$slug" params={{ slug: a.slug }}>
-                <ActivityCard Icon={icons[i % 4]} title={a.name} description={a.description ?? ""}
+                <ActivityCard Icon={getActivityIcon(a.name, a.icon, a.slug)} title={a.name} description={a.description ?? ""}
                   variant={i % 2 === 0 ? "lime" : "navy"} tint={i % 2 === 0 ? "cream" : "white"} />
               </Link>
             ))}
