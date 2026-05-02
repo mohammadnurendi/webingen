@@ -1,18 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Calendar, MessageCircle, Heart, Sparkles, Bike, Users } from "lucide-react";
+import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
 import { Hero } from "@/components/site/Hero";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { ActivityCard } from "@/components/site/ActivityCard";
 import { PhotoCarousel } from "@/components/site/PhotoCarousel";
 import { useActivities, useMoments, useSchedules } from "@/lib/usePublicData";
 import { useSettings, buildWaLink } from "@/lib/useSettings";
+import { getActivityIcon } from "@/lib/activityIcon";
 
 export const Route = createFileRoute("/activity")({
   head: () => ({ meta: [{ title: "Activity — Ingenious Community" }] }),
   component: ActivityPage,
 });
-
-const icons = [Heart, Sparkles, Bike, Users];
 
 function ActivityPage() {
   const activities = useActivities();
@@ -36,7 +35,7 @@ function ActivityPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activities.map((a, i) => (
               <Link key={a.id} to="/activity/$slug" params={{ slug: a.slug }}>
-                <ActivityCard Icon={icons[i % 4]} title={a.name} description={a.description ?? ""}
+                <ActivityCard Icon={getActivityIcon(a.name, a.icon, a.slug)} title={a.name} description={a.description ?? ""}
                   variant={i % 2 === 0 ? "lime" : "navy"} tint={i % 2 === 0 ? "cream" : "white"} />
               </Link>
             ))}

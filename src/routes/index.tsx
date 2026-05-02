@@ -8,6 +8,7 @@ import { useActivities, useMembers, useMoments, useSchedules } from "@/lib/usePu
 import { useSettings, buildWaLink } from "@/lib/useSettings";
 import { gdriveImage } from "@/lib/gdrive";
 import { Sparkles as SparkIcon, Heart, Bike, Users as UsersIcon } from "lucide-react";
+import { getActivityIcon } from "@/lib/activityIcon";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -81,7 +82,7 @@ function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activities.slice(0, 4).map((a, i) => (
               <Link key={a.id} to="/activity/$slug" params={{ slug: a.slug }}>
-                <ActivityCard Icon={fallbackIcons[i % 4]} title={a.name} description={a.description ?? ""} variant={i % 2 === 0 ? "lime" : "navy"} tint={i % 2 === 0 ? "cream" : "white"} />
+                <ActivityCard Icon={getActivityIcon(a.name, a.icon, a.slug)} title={a.name} description={a.description ?? ""} variant={i % 2 === 0 ? "lime" : "navy"} tint={i % 2 === 0 ? "cream" : "white"} />
               </Link>
             ))}
             {activities.length === 0 && <p className="col-span-full text-sm text-muted-foreground">Belum ada activity. Tambahkan di admin.</p>}
