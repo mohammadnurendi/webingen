@@ -1,18 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Calendar, MessageCircle, Heart, Sparkles, Bike, Users } from "lucide-react";
+import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
 import { Hero } from "@/components/site/Hero";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { ActivityCard } from "@/components/site/ActivityCard";
 import { PhotoCarousel } from "@/components/site/PhotoCarousel";
 import { useActivities, useMoments, useSchedules } from "@/lib/usePublicData";
 import { useSettings, buildWaLink } from "@/lib/useSettings";
+import { getActivityIcon } from "@/lib/activityIcon";
 
 export const Route = createFileRoute("/activity")({
   head: () => ({ meta: [{ title: "Activity — Ingenious Community" }] }),
   component: ActivityPage,
 });
-
-const icons = [Heart, Sparkles, Bike, Users];
 
 function ActivityPage() {
   const activities = useActivities();
