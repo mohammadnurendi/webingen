@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-mark.png";
 
 const navItems = [
   { to: "/" as const, label: "Home" },
@@ -14,8 +14,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="Ingenious" className="h-10 w-auto" />
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src={logo} alt="Ingenious Generation" className="h-10 w-auto" />
+          <span className="hidden text-lg font-extrabold tracking-tight sm:inline">
+            <span className="text-navy">Ingenious</span>{" "}
+            <span className="text-lime">Generation</span>
+          </span>
         </Link>
         <nav className="hidden items-center gap-9 md:flex">
           {navItems.map((item) => (
