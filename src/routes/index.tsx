@@ -45,29 +45,29 @@ function HomePage() {
         </Link>
       </Hero>
 
-      <section className="bg-background py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 md:grid-cols-2">
+      <section className="bg-background py-14 sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-2">
           <div>
             <p className="mb-3 text-xs font-bold tracking-[0.25em] text-lime">ABOUT US</p>
-            <h2 className="text-balance text-3xl font-extrabold italic text-navy md:text-4xl">
+            <h2 className="text-balance text-2xl font-extrabold italic text-navy sm:text-3xl md:text-4xl">
               Lebih dari sekadar angkatan,<br />kita adalah gerakan.
             </h2>
-            <p className="mt-5 max-w-md text-muted-foreground">
+            <p className="mt-5 max-w-md text-sm text-muted-foreground sm:text-base">
               Ingenious hadir untuk saling belajar, bertumbuh, dan terhubung melalui kegiatan positif yang memberi dampak nyata.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-4 self-center">
+          <div className="grid grid-cols-3 gap-3 self-center sm:gap-4">
             {[
               { Icon: Users, label: "BROTHERHOOD", desc: "Kebersamaan yang tulus dan suportif." },
               { Icon: Sparkles, label: "GROWTH", desc: "Terus belajar dan menjadi versi terbaik." },
               { Icon: ShieldCheck, label: "MOVEMENT", desc: "Bergerak bersama, memberi manfaat." },
             ].map(({ Icon, label, desc }) => (
               <div key={label} className="text-center">
-                <div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-full bg-cream text-navy ring-4 ring-lime/30">
-                  <Icon className="h-7 w-7" />
+                <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-cream text-navy ring-4 ring-lime/30 sm:h-16 sm:w-16">
+                  <Icon className="h-5 w-5 sm:h-7 sm:w-7" />
                 </div>
-                <p className="text-xs font-extrabold tracking-wider text-navy">{label}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
+                <p className="text-[10px] font-extrabold tracking-wider text-navy sm:text-xs">{label}</p>
+                <p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">{desc}</p>
               </div>
             ))}
           </div>
@@ -158,13 +158,13 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="relative overflow-hidden rounded-3xl bg-navy p-10 text-navy-foreground md:p-14">
+      <section className="bg-background pb-16 sm:pb-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-3xl bg-navy p-6 text-navy-foreground sm:p-10 md:p-14">
             <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-lime/20 blur-3xl" />
-            <div className="grid gap-10 md:grid-cols-2 md:items-center">
+            <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
-                <h3 className="text-balance text-3xl font-extrabold italic md:text-4xl">
+                <h3 className="text-balance text-2xl font-extrabold italic sm:text-3xl md:text-4xl">
                   Be Part of<br />the <span className="text-lime">Movement</span>
                 </h3>
                 <p className="mt-3 max-w-md text-sm text-white/70">
@@ -172,12 +172,12 @@ function HomePage() {
                 </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
-                <a href={waLink} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <a href={waLink} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-lime/40 hover:bg-white/10">
                   <p className="mb-1 text-xs font-bold tracking-widest text-lime">Join Us</p>
                   <p className="mb-4 text-xs text-white/70">Hubungi kami via WhatsApp</p>
                   <span className="inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-xs font-extrabold text-navy"><MessageCircle className="h-3 w-3" /> Chat Now</span>
                 </a>
-                <Link to="/join" className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <Link to="/join" className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-lime/40 hover:bg-white/10">
                   <p className="mb-1 text-xs font-bold tracking-widest text-lime">Become a Member</p>
                   <p className="mb-4 text-xs text-white/70">Isi form singkat untuk bergabung</p>
                   <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-extrabold text-navy">Isi Formulir <ArrowRight className="h-3 w-3" /></span>

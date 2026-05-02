@@ -20,12 +20,12 @@ export function Hero({ eyebrow, title, description, children }: HeroProps) {
         </svg>
         <div className="animate-blob absolute -right-10 top-1/3 h-56 w-72 rounded-[50%] bg-white/10 blur-2xl" />
       </div>
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-2 md:py-28">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-2 md:py-28">
         <div className="max-w-xl">
-          {eyebrow && <p className="animate-fade-up mb-4 text-xs font-bold tracking-[0.25em] text-lime">{eyebrow}</p>}
-          <h1 className="animate-fade-up delay-100 text-balance text-5xl font-extrabold leading-[1.05] md:text-6xl">{title}</h1>
-          <p className="animate-fade-up delay-200 mt-5 max-w-md text-base text-white/75">{description}</p>
-          {children && <div className="animate-fade-up delay-300 mt-8 flex flex-wrap gap-3">{children}</div>}
+          {eyebrow && <p className="animate-fade-up mb-4 text-[11px] font-bold tracking-[0.25em] text-lime sm:text-xs">{eyebrow}</p>}
+          <h1 className="animate-fade-up delay-100 text-balance text-4xl font-extrabold leading-[1.05] sm:text-5xl md:text-6xl">{title}</h1>
+          <p className="animate-fade-up delay-200 mt-4 max-w-md text-sm text-white/75 sm:mt-5 sm:text-base">{description}</p>
+          {children && <div className="animate-fade-up delay-300 mt-6 flex flex-wrap gap-3 sm:mt-8">{children}</div>}
         </div>
       </div>
     </section>

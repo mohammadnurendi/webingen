@@ -5,15 +5,9 @@ import logo from "@/assets/logo-mark.png";
 export function Footer() {
   return (
     <footer className="bg-navy text-navy-foreground">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 sm:py-14 md:grid-cols-4">
         <div className="md:col-span-1">
-          <div className="flex items-center gap-2.5">
-            <img src={logo} alt="Ingenious Generation" className="h-10 w-auto" />
-            <span className="text-lg font-extrabold tracking-tight">
-              <span className="text-white">Ingenious</span>{" "}
-              <span className="text-lime">Generation</span>
-            </span>
-          </div>
+          <img src={logo} alt="Ingenious Generation" className="h-12 w-auto" />
           <p className="mt-4 max-w-xs text-sm text-white/70">
             Dari angkatan, menjadi ruang untuk bergerak, bertumbuh, dan memberi manfaat bersama.
           </p>
