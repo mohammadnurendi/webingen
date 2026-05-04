@@ -3,11 +3,12 @@ import { useMemo, useState } from "react";
 import { Hero } from "@/components/site/Hero";
 import { PhotoCarousel } from "@/components/site/PhotoCarousel";
 import { useActivities, useMoments } from "@/lib/usePublicData";
+import heroImg from "@/assets/ing4.jpeg";
 
-export const Route = createFileRoute("/moments")({
+export const Route = createFileRoute("/moments")(({
   head: () => ({ meta: [{ title: "Moments — Ingenious" }] }),
   component: MomentsPage,
-});
+}));
 
 function MomentsPage() {
   const activities = useActivities();
@@ -31,11 +32,15 @@ function MomentsPage() {
 
   return (
     <>
-      <Hero eyebrow="MOMENTS" title={<>Momen Sederhana,<br /><span className="text-lime">Kenangan</span> Luar Biasa.</>}
-        description="Setiap langkah, tawa, dan keringat yang jatuh adalah bagian dari perjalanan kita bersama." />
+      <Hero 
+        eyebrow="MOMENTS" 
+        title={<>Momen Sederhana,<br /><span className="text-lime">Kenangan</span> Luar Biasa.</>}
+        description="Setiap langkah, tawa, dan keringat yang jatuh adalah bagian dari perjalanan kita bersama."
+        bgImage={heroImg}
+      />
 
-      <section className="bg-background py-12">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-6">
+      <section className="bg-background py-8 sm:py-12">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 sm:px-6">
           <button onClick={() => setFilter("all")} className={`rounded-full px-4 py-2 text-sm font-bold transition ${filter === "all" ? "bg-navy text-navy-foreground" : "bg-card text-navy hover:bg-cream"}`}>Semua</button>
           {activities.map((a) => (
             <button key={a.id} onClick={() => setFilter(a.id)} className={`rounded-full px-4 py-2 text-sm font-bold transition ${filter === a.id ? "bg-navy text-navy-foreground" : "bg-card text-navy hover:bg-cream"}`}>
@@ -45,8 +50,8 @@ function MomentsPage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl space-y-16 px-6">
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl space-y-12 sm:space-y-16 px-4 sm:px-6">
           {groups.length === 0 && <p className="text-center text-sm text-muted-foreground">Belum ada momen.</p>}
           {groups.map(([period, items]) => (
             <div key={period} className="grid gap-8 md:grid-cols-[200px_1fr]">

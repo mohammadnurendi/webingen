@@ -7,11 +7,12 @@ import { PhotoCarousel } from "@/components/site/PhotoCarousel";
 import { useActivities, useMoments, useSchedules } from "@/lib/usePublicData";
 import { useSettings, buildWaLink } from "@/lib/useSettings";
 import { getActivityIcon } from "@/lib/activityIcon";
+import heroImg from "@/assets/ing2.png";
 
-export const Route = createFileRoute("/activity")({
+export const Route = createFileRoute("/activity")(({
   head: () => ({ meta: [{ title: "Activity — Ingenious Community" }] }),
   component: ActivityPage,
-});
+}));
 
 function ActivityPage() {
   const activities = useActivities();
@@ -22,15 +23,19 @@ function ActivityPage() {
 
   return (
     <>
-      <Hero eyebrow="ACTIVITY" title={<>Let's Move<br />Together</>}
-        description="Berbagai kegiatan positif yang kami lakukan untuk belajar, bertumbuh, dan memberi manfaat.">
+      <Hero 
+        eyebrow="ACTIVITY" 
+        title={<>Let's Move<br />Together</>}
+        description="Berbagai kegiatan positif yang kami lakukan untuk belajar, bertumbuh, dan memberi manfaat."
+        bgImage={heroImg}
+      >
         <a href="#schedule" className="inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-sm font-extrabold text-navy shadow-glow">
           <Calendar className="h-4 w-4" /> Jadwal Mendatang <ArrowRight className="h-4 w-4" />
         </a>
       </Hero>
 
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-background py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionTitle eyebrow="OUR ACTIVITIES" title="Apa yang Kami Lakukan" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activities.map((a, i) => (
@@ -44,8 +49,8 @@ function ActivityPage() {
         </div>
       </section>
 
-      <section id="schedule" className="bg-cream py-16">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="schedule" className="bg-cream py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionTitle eyebrow="UPCOMING SCHEDULE" title="Jadwal Mendatang" />
           {schedules.length === 0 ? (
             <p className="text-center text-sm text-muted-foreground">Belum ada jadwal mendatang.</p>
@@ -73,8 +78,8 @@ function ActivityPage() {
         </div>
       </section>
 
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-background py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionTitle eyebrow="RECENT" title="Kegiatan Terbaru" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {moments.slice(0, 4).map((m) => (
@@ -90,15 +95,15 @@ function ActivityPage() {
         </div>
       </section>
 
-      <section className="bg-cream pb-20 pt-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-6">
+      <section className="bg-cream pb-12 sm:pb-16 pt-4 sm:pt-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-4 sm:px-6">
           <div>
             <p className="text-2xl font-extrabold italic text-navy">Siap untuk <span className="text-lime">Aktivitas</span> Berikutnya?</p>
             <p className="mt-1 text-sm text-muted-foreground">Ayo bergerak bareng bersama Ingenious!</p>
           </div>
           <div className="flex gap-3">
             <a href="#schedule" className="inline-flex items-center gap-2 rounded-full bg-lime px-5 py-3 text-sm font-extrabold text-navy"><Calendar className="h-4 w-4" /> Lihat Jadwal</a>
-            <a href={waLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-5 py-3 text-sm font-extrabold text-navy"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
+            <a href={waLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-5 py-3 text-sm font-extrabold text-navy hover:border-lime hover:text-lime"><MessageCircle className="h-4 w-4" /> Chat</a>
           </div>
         </div>
       </section>

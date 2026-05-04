@@ -106,8 +106,8 @@ function ActivityDetail() {
 
       {/* SCHEDULE TIMELINE */}
       {schedules.length > 0 && (
-        <section className="bg-cream py-16">
-          <div className="mx-auto max-w-7xl px-6">
+        <section className="bg-cream py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="mb-8 flex items-end justify-between">
               <div>
                 <p className="text-xs font-bold tracking-[0.25em] text-lime">UPCOMING</p>
@@ -147,8 +147,8 @@ function ActivityDetail() {
       )}
 
       {/* MOMENTS GALLERY */}
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl space-y-12 px-6">
+      <section className="bg-background py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6">
           <div>
             <p className="text-xs font-bold tracking-[0.25em] text-lime">GALLERY</p>
             <h2 className="text-3xl font-extrabold italic text-navy md:text-4xl">Momen {activity.name}</h2>
@@ -184,8 +184,8 @@ function ActivityDetail() {
       </section>
 
       {/* CTA */}
-      <section className="bg-cream pb-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-cream pb-12 sm:pb-16 pt-4 sm:pt-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="relative overflow-hidden rounded-3xl bg-navy p-8 text-navy-foreground md:p-12">
             <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-lime/20 blur-3xl" />
             <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">

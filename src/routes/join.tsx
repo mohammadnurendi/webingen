@@ -4,11 +4,12 @@ import { ArrowRight, MessageCircle, CheckCircle2, Users, Sparkles, Zap, Heart, F
 import { Hero } from "@/components/site/Hero";
 import { useSettings, buildWaLink } from "@/lib/useSettings";
 import { toast } from "sonner";
+import heroImg from "@/assets/ing5.png";
 
-export const Route = createFileRoute("/join")({
+export const Route = createFileRoute("/join")(({
   head: () => ({ meta: [{ title: "Join — Ingenious Community" }] }),
   component: JoinPage,
-});
+}));
 
 const values = [
   { Icon: Users, label: "Brotherhood", desc: "Kebersamaan yang tulus dan saling support." },
@@ -44,8 +45,12 @@ function JoinPage() {
 
   return (
     <>
-      <Hero eyebrow="JOIN" title={<>Be Part of<br />the <span className="text-lime">Movement.</span></>}
-        description="Ingenious bukan hanya tentang kegiatan, tapi tentang kebersamaan yang bikin kita jadi lebih baik.">
+      <Hero 
+        eyebrow="JOIN" 
+        title={<>Be Part of<br />the <span className="text-lime">Movement.</span></>}
+        description="Ingenious bukan hanya tentang kegiatan, tapi tentang kebersamaan yang bikin kita jadi lebih baik."
+        bgImage={heroImg}
+      >
         <a href={settings.google_form_url || "#"} onClick={handleJoinClick} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-sm font-extrabold text-navy shadow-glow">
           Mulai Bergabung <ArrowRight className="h-4 w-4" />
         </a>
@@ -54,9 +59,9 @@ function JoinPage() {
         </a>
       </Hero>
 
-      <section className="bg-background py-20">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 lg:grid-cols-2">
-          <div className="rounded-3xl bg-cream p-8 shadow-soft">
+      <section className="bg-background py-12 sm:py-16">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-2">
+          <div className="rounded-3xl bg-cream p-6 sm:p-8 shadow-soft">
             <p className="mb-2 text-xs font-bold tracking-[0.25em] text-lime">SIAPA KITA?</p>
             <h2 className="text-3xl font-extrabold italic text-navy">Tentang Ingenious</h2>
             <p className="mt-4 text-sm text-muted-foreground">Berawal dari ikatan angkatan, kini Ingenious menjadi komunitas yang aktif, positif, dan terus bertumbuh.</p>
@@ -70,7 +75,7 @@ function JoinPage() {
               ))}
             </div>
           </div>
-          <div className="rounded-3xl bg-cream p-8 shadow-soft">
+          <div className="rounded-3xl bg-cream p-6 sm:p-8 shadow-soft">
             <p className="mb-2 text-xs font-bold tracking-[0.25em] text-lime">SIAPA YANG BISA BERGABUNG?</p>
             <h2 className="text-3xl font-extrabold italic text-navy">We're Open for You!</h2>
             <ul className="mt-6 space-y-3">
@@ -84,16 +89,16 @@ function JoinPage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <p className="mb-2 text-xs font-bold tracking-[0.25em] text-lime">ALUR BERGABUNG</p>
-          <h2 className="mb-12 text-3xl font-extrabold italic text-navy">Bagaimana Cara Bergabung?</h2>
-          <div className="grid gap-8 md:grid-cols-5">
+          <h2 className="mb-8 sm:mb-12 text-3xl font-extrabold italic text-navy">Bagaimana Cara Bergabung?</h2>
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-5">
             {steps.map((s, i) => (
               <div key={s.title} className="text-center">
                 <div className="relative mx-auto grid h-20 w-20 place-items-center rounded-full bg-card shadow-soft">
                   <s.Icon className="h-8 w-8 text-navy" />
-                  <span className="absolute -top-2 -right-2 grid h-7 w-7 place-items-center rounded-full bg-navy text-xs font-extrabold text-lime">{i + 1}</span>
+                  <span className="absolute -right-2 -top-2 grid h-7 w-7 place-items-center rounded-full bg-navy text-xs font-extrabold text-lime">{i + 1}</span>
                 </div>
                 <p className="mt-4 text-sm font-extrabold text-navy">{s.title}</p>
                 <p className="mt-2 text-xs text-muted-foreground">{s.desc}</p>
@@ -103,9 +108,9 @@ function JoinPage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 lg:grid-cols-2">
-          <div className="rounded-3xl bg-card p-8 shadow-soft">
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-2">
+          <div className="rounded-3xl bg-card p-6 sm:p-8 shadow-soft">
             <h2 className="text-2xl font-extrabold italic text-navy">FAQ</h2>
             <div className="mt-6 space-y-2">
               {faqs.map((f, i) => {
@@ -122,7 +127,7 @@ function JoinPage() {
               })}
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-3xl bg-navy p-8 text-navy-foreground shadow-soft">
+          <div className="relative overflow-hidden rounded-3xl bg-navy p-6 sm:p-8 text-navy-foreground shadow-soft">
             <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-lime/20 blur-3xl" />
             <p className="relative text-xs font-bold tracking-[0.25em] text-lime">SIAP BERGABUNG?</p>
             <h3 className="relative mt-2 text-3xl font-extrabold italic">Mulai sekarang, <br /><span className="text-lime">jadi bagian kami!</span></h3>

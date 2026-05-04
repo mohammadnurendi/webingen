@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { verifyAdminSession } from "@/lib/admin.functions";
 
 interface AuthCtx {
   user: User | null;
@@ -16,6 +15,16 @@ interface AuthCtx {
 
 const Ctx = createContext<AuthCtx | null>(null);
 
+async function checkIsAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("role", "admin")
+    .maybeSingle();
+  return !error && !!data;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -23,51 +32,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, sess) => {
-      setSession(sess);
-      setUser(sess?.user ?? null);
-      if (sess?.user) {
-        // defer role check to avoid deadlock
-        setLoading(true);
-        setTimeout(() => {
-          void checkAdmin(sess.access_token).finally(() => setLoading(false));
-        }, 0);
-      } else {
-        setIsAdmin(false);
-        setLoading(false);
-      }
-    });
     void supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
-        void checkAdmin(s.access_token).finally(() => setLoading(false));
+        void checkIsAdmin(s.user.id).then(setIsAdmin).finally(() => setLoading(false));
       } else {
         setIsAdmin(false);
         setLoading(false);
       }
-    }).catch(() => {
-      setIsAdmin(false);
-      setLoading(false);
     });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, sess) => {
+      setSession(sess);
+      setUser(sess?.user ?? null);
+      if (sess?.user) {
+        setLoading(true);
+        void checkIsAdmin(sess.user.id).then(setIsAdmin).finally(() => setLoading(false));
+      } else {
+        setIsAdmin(false);
+        setLoading(false);
+      }
+    });
+
     return () => subscription.unsubscribe();
   }, []);
-
-  async function checkAdmin(accessToken: string) {
-    for (let attempt = 0; attempt < 3; attempt += 1) {
-      try {
-        const result = await verifyAdminSession({ data: { accessToken } });
-        setIsAdmin(result.isAdmin);
-        return;
-      } catch {
-        if (attempt < 2) {
-          await new Promise((resolve) => window.setTimeout(resolve, 600 * (attempt + 1)));
-        }
-      }
-    }
-
-    setIsAdmin(false);
-  }
 
   const value: AuthCtx = {
     user, session, isAdmin, loading,
@@ -83,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signOut: async () => { await supabase.auth.signOut(); },
     refreshAdmin: async () => {
       const { data: { session: s } } = await supabase.auth.getSession();
-      if (s?.user) await checkAdmin(s.access_token);
+      if (s?.user) setIsAdmin(await checkIsAdmin(s.user.id));
       else setIsAdmin(false);
     },
   };

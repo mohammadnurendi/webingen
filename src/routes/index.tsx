@@ -9,16 +9,26 @@ import { useSettings, buildWaLink } from "@/lib/useSettings";
 import { gdriveImage } from "@/lib/gdrive";
 import { Sparkles as SparkIcon, Heart, Bike, Users as UsersIcon } from "lucide-react";
 import { getActivityIcon } from "@/lib/activityIcon";
+import heroImg from "@/assets/ing1.png";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(({
   head: () => ({
     meta: [
       { title: "Ingenious Community — Learn, Grow, Connect" },
-      { name: "description", content: "Komunitas tempat bergerak, bertumbuh, dan memberi manfaat bersama." },
+      {
+        name: "description",
+        content: "Komunitas tempat bergerak, bertumbuh, dan memberi manfaat bersama.",
+      },
+    ],
+    links: [
+      {
+        rel: "icon",
+        href: "/favicon.ico",
+      },
     ],
   }),
   component: HomePage,
-});
+}));
 
 const fallbackIcons = [Heart, SparkIcon, Bike, UsersIcon];
 
@@ -36,6 +46,7 @@ function HomePage() {
         eyebrow=""
         title={<>Ingenious<br />Community</>}
         description="Dari angkatan, menjadi ruang untuk bergerak, bertumbuh, dan memberi manfaat bersama."
+        bgImage={heroImg}
       >
         <p className="mb-1 w-full text-xs font-bold tracking-[0.3em] text-lime">LEARN • GROW • CONNECT</p>
         <Link to="/activity" className="inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-sm font-extrabold text-navy shadow-glow">
@@ -46,7 +57,7 @@ function HomePage() {
         </Link>
       </Hero>
 
-      <section className="bg-background py-14 sm:py-20">
+      <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-2">
           <div>
             <p className="mb-3 text-xs font-bold tracking-[0.25em] text-lime">ABOUT US</p>
@@ -75,10 +86,13 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <SectionTitle eyebrow="WHAT WE DO" title="Kegiatan Kami"
-            action={<Link to="/activity" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link>} />
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionTitle 
+            eyebrow="WHAT WE DO" 
+            title="Kegiatan Kami"
+            action={activities.length > 4 ? <Link to="/activity" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link> : undefined}
+          />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {activities.slice(0, 4).map((a, i) => (
               <Link key={a.id} to="/activity/$slug" params={{ slug: a.slug }}>
@@ -90,8 +104,8 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-cream py-16">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-cream py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionTitle eyebrow="NEXT MOVES" title="Jadwal Mendatang" />
           {schedules.length === 0 ? (
             <p className="text-center text-sm text-muted-foreground">Belum ada jadwal mendatang.</p>
@@ -119,10 +133,13 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <SectionTitle eyebrow="THE PEOPLE" title="Komunitas Kami"
-            action={<Link to="/community" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link>} />
+      <section className="bg-background py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionTitle 
+            eyebrow="THE PEOPLE" 
+            title="Komunitas Kami"
+            action={members.length > 6 ? <Link to="/community" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link> : undefined}
+          />
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-6">
             {members.slice(0, 6).map((m) => (
               <div key={m.id} className="text-center">
@@ -141,10 +158,13 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <SectionTitle eyebrow="MOMENTS" title="Momen Kebersamaan"
-            action={<Link to="/moments" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link>} />
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionTitle 
+            eyebrow="MOMENTS" 
+            title="Momen Kebersamaan"
+            action={moments.length > 5 ? <Link to="/moments" className="inline-flex items-center gap-1 text-sm font-bold text-navy hover:text-lime">Lihat semua <ArrowRight className="h-4 w-4" /></Link> : undefined}
+          />
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
             {moments.slice(0, 5).map((m) => (
               <div key={m.id} className="overflow-hidden rounded-2xl bg-card shadow-soft">
@@ -159,7 +179,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background pb-16 sm:pb-20">
+      <section className="bg-background pb-12 sm:pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="relative overflow-hidden rounded-3xl bg-navy p-6 text-navy-foreground sm:p-10 md:p-14">
             <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-lime/20 blur-3xl" />

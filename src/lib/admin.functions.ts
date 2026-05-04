@@ -1,161 +1,145 @@
-import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+// Admin functions — semua operasi dijalankan langsung di client menggunakan
+// Supabase dengan session user yang sudah login. RLS di Supabase memastikan
+// hanya admin yang bisa mengakses data sensitif.
+import { supabase } from "@/integrations/supabase/client";
 
-const adminTableSchema = z.enum(["activities", "members", "schedules", "moments", "moment_photos", "app_settings"]);
-const filterSchema = z.object({ column: z.string().min(1), value: z.unknown() });
-const orderSchema = z.object({
-  column: z.string().min(1),
-  ascending: z.boolean().optional(),
-  nullsFirst: z.boolean().optional(),
-});
+type AdminTable = "activities" | "members" | "schedules" | "moments" | "moment_photos" | "app_settings";
+type AdminFilter = { column: string; value: unknown };
+type AdminOrder = { column: string; ascending?: boolean; nullsFirst?: boolean };
 
-async function requireAdmin(accessToken: string) {
-  const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(accessToken);
+async function requireAdmin() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error("Sesi admin habis. Silakan login ulang.");
 
-  if (userError || !userData.user) {
-    throw new Error("Sesi admin tidak valid. Silakan login ulang.");
-  }
-
-  const { data: roleData, error: roleError } = await supabaseAdmin
+  const { data: roleData, error } = await supabase
     .from("user_roles")
     .select("id")
-    .eq("user_id", userData.user.id)
+    .eq("user_id", session.user.id)
     .eq("role", "admin")
     .maybeSingle();
 
-  if (roleError || !roleData) {
-    throw new Error("Akun ini belum punya akses admin.");
+  if (error || !roleData) throw new Error("Akun ini belum punya akses admin.");
+  return session.user;
+}
+
+export async function verifyAdminSession(_opts?: unknown): Promise<{ isAdmin: boolean }> {
+  try {
+    await requireAdmin();
+    return { isAdmin: true };
+  } catch {
+    return { isAdmin: false };
   }
-
-  return userData.user;
 }
 
-function applyFilters(query: any, filters: Array<{ column: string; value?: unknown }>) {
-  return filters.reduce((q, filter) => q.eq(filter.column, filter.value), query);
+export async function getAdminRows(opts: {
+  data: {
+    table: AdminTable;
+    select?: string;
+    filters?: AdminFilter[];
+    order?: AdminOrder[];
+    accessToken?: string;
+  };
+}) {
+  await requireAdmin();
+  const { table, select, filters, order } = opts.data;
+  let query = (supabase as any).from(table).select(select ?? "*");
+  for (const f of filters ?? []) query = query.eq(f.column, f.value);
+  for (const o of order ?? []) query = query.order(o.column, { ascending: o.ascending ?? true, nullsFirst: o.nullsFirst });
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data ?? [];
 }
 
-export const verifyAdminSession = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({ accessToken: z.string().min(1) }).parse(data))
-  .handler(async ({ data }) => {
-    try {
-      await requireAdmin(data.accessToken);
-      return { isAdmin: true };
-    } catch {
-      return { isAdmin: false };
-    }
-  });
+export async function getAdminCounts(_opts?: unknown) {
+  await requireAdmin();
+  const [activities, schedules, members, moments] = await Promise.all([
+    supabase.from("activities").select("id", { count: "exact", head: true }),
+    supabase.from("schedules").select("id", { count: "exact", head: true }),
+    supabase.from("members").select("id", { count: "exact", head: true }),
+    supabase.from("moments").select("id", { count: "exact", head: true }),
+  ]);
+  for (const r of [activities, schedules, members, moments]) {
+    if (r.error) throw new Error(r.error.message);
+  }
+  return {
+    activities: activities.count ?? 0,
+    schedules: schedules.count ?? 0,
+    members: members.count ?? 0,
+    moments: moments.count ?? 0,
+  };
+}
 
-export const getAdminRows = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({
-    accessToken: z.string().min(1),
-    table: adminTableSchema,
-    select: z.string().optional(),
-    filters: z.array(filterSchema).optional(),
-    order: z.array(orderSchema).optional(),
-  }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    let query = (supabaseAdmin as any).from(data.table).select(data.select ?? "*");
+export async function insertAdminRows(opts: {
+  data: {
+    table: AdminTable;
+    values: Record<string, unknown> | Array<Record<string, unknown>>;
+    select?: string;
+    single?: boolean;
+    accessToken?: string;
+  };
+}) {
+  await requireAdmin();
+  const { table, values, select, single } = opts.data;
+  let query = (supabase as any).from(table).insert(values);
+  if (select) query = query.select(select);
+  if (single) query = query.single();
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data ?? null;
+}
 
-    for (const filter of data.filters ?? []) query = query.eq(filter.column, filter.value);
-    for (const order of data.order ?? []) {
-      query = query.order(order.column, { ascending: order.ascending ?? true, nullsFirst: order.nullsFirst });
-    }
+export async function updateAdminRows(opts: {
+  data: {
+    table: AdminTable;
+    values: Record<string, unknown>;
+    filters: AdminFilter[];
+    select?: string;
+    single?: boolean;
+    accessToken?: string;
+  };
+}) {
+  await requireAdmin();
+  const { table, values, filters, select, single } = opts.data;
+  let query = (supabase as any).from(table).update(values);
+  for (const f of filters) query = query.eq(f.column, f.value);
+  if (select) query = query.select(select);
+  if (single) query = query.single();
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data ?? null;
+}
 
-    const { data: rows, error } = await query;
-    if (error) throw new Error(error.message);
-    return rows ?? [];
-  });
+export async function upsertAdminRows(opts: {
+  data: {
+    table: AdminTable;
+    values: Record<string, unknown> | Array<Record<string, unknown>>;
+    select?: string;
+    single?: boolean;
+    accessToken?: string;
+  };
+}) {
+  await requireAdmin();
+  const { table, values, select, single } = opts.data;
+  let query = (supabase as any).from(table).upsert(values);
+  if (select) query = query.select(select);
+  if (single) query = query.single();
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data ?? null;
+}
 
-export const getAdminCounts = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({ accessToken: z.string().min(1) }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    const admin = supabaseAdmin as any;
-    const [activities, schedules, members, moments] = await Promise.all([
-      admin.from("activities").select("id", { count: "exact", head: true }),
-      admin.from("schedules").select("id", { count: "exact", head: true }),
-      admin.from("members").select("id", { count: "exact", head: true }),
-      admin.from("moments").select("id", { count: "exact", head: true }),
-    ]);
-
-    for (const result of [activities, schedules, members, moments]) {
-      if (result.error) throw new Error(result.error.message);
-    }
-
-    return {
-      activities: activities.count ?? 0,
-      schedules: schedules.count ?? 0,
-      members: members.count ?? 0,
-      moments: moments.count ?? 0,
-    };
-  });
-
-export const insertAdminRows = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({
-    accessToken: z.string().min(1),
-    table: adminTableSchema,
-    values: z.union([z.record(z.unknown()), z.array(z.record(z.unknown()))]),
-    select: z.string().optional(),
-    single: z.boolean().optional(),
-  }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    let query = (supabaseAdmin as any).from(data.table).insert(data.values);
-    if (data.select) query = query.select(data.select);
-    if (data.single) query = query.single();
-    const { data: rows, error } = await query;
-    if (error) throw new Error(error.message);
-    return rows ?? null;
-  });
-
-export const updateAdminRows = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({
-    accessToken: z.string().min(1),
-    table: adminTableSchema,
-    values: z.record(z.unknown()),
-    filters: z.array(filterSchema).min(1),
-    select: z.string().optional(),
-    single: z.boolean().optional(),
-  }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    let query = applyFilters((supabaseAdmin as any).from(data.table).update(data.values), data.filters);
-    if (data.select) query = query.select(data.select);
-    if (data.single) query = query.single();
-    const { data: rows, error } = await query;
-    if (error) throw new Error(error.message);
-    return rows ?? null;
-  });
-
-export const upsertAdminRows = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({
-    accessToken: z.string().min(1),
-    table: adminTableSchema,
-    values: z.union([z.record(z.unknown()), z.array(z.record(z.unknown()))]),
-    select: z.string().optional(),
-    single: z.boolean().optional(),
-  }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    let query = (supabaseAdmin as any).from(data.table).upsert(data.values);
-    if (data.select) query = query.select(data.select);
-    if (data.single) query = query.single();
-    const { data: rows, error } = await query;
-    if (error) throw new Error(error.message);
-    return rows ?? null;
-  });
-
-export const deleteAdminRows = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({
-    accessToken: z.string().min(1),
-    table: adminTableSchema,
-    filters: z.array(filterSchema).min(1),
-  }).parse(data))
-  .handler(async ({ data }) => {
-    await requireAdmin(data.accessToken);
-    const { error } = await applyFilters((supabaseAdmin as any).from(data.table).delete(), data.filters);
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
+export async function deleteAdminRows(opts: {
+  data: {
+    table: AdminTable;
+    filters: AdminFilter[];
+    accessToken?: string;
+  };
+}) {
+  await requireAdmin();
+  const { table, filters } = opts.data;
+  let query = (supabase as any).from(table).delete();
+  for (const f of filters) query = query.eq(f.column, f.value);
+  const { error } = await query;
+  if (error) throw new Error(error.message);
+  return { ok: true };
+}

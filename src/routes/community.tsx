@@ -5,11 +5,12 @@ import { SectionTitle } from "@/components/site/SectionTitle";
 import { useMembers } from "@/lib/usePublicData";
 import { useSettings, buildWaLink } from "@/lib/useSettings";
 import { gdriveImage } from "@/lib/gdrive";
+import heroImg from "@/assets/ing3.jpeg";
 
-export const Route = createFileRoute("/community")({
+export const Route = createFileRoute("/community")(({
   head: () => ({ meta: [{ title: "Community — Ingenious" }] }),
   component: CommunityPage,
-});
+}));
 
 function CommunityPage() {
   const members = useMembers();
@@ -19,12 +20,16 @@ function CommunityPage() {
 
   return (
     <>
-      <Hero eyebrow="COMMUNITY" title={<>The People<br />Behind <span className="text-lime">Ingenious</span></>}
-        description="Kami berbeda latar, tapi punya tujuan yang sama. Belajar, bertumbuh, dan memberi manfaat bersama." />
+      <Hero 
+        eyebrow="COMMUNITY" 
+        title={<>The People<br />Behind <span className="text-lime">Ingenious</span></>}
+        description="Kami berbeda latar, tapi punya tujuan yang sama. Belajar, bertumbuh, dan memberi manfaat bersama."
+        bgImage={heroImg}
+      />
 
       {featured.length > 0 && (
-        <section className="bg-background py-20">
-          <div className="mx-auto max-w-7xl px-6">
+        <section className="bg-background py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <SectionTitle eyebrow="MEMBER SPOTLIGHT" title={<>Kenalan dengan<br />Teman-Teman Kami</>} />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((m) => (
@@ -51,8 +56,8 @@ function CommunityPage() {
         </section>
       )}
 
-      <section className="bg-background pb-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-background pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionTitle eyebrow="ALL MEMBERS" title="Seluruh Anggota" />
           {members.length === 0 ? (
             <p className="text-center text-sm text-muted-foreground">Belum ada member. Tambah di admin.</p>
@@ -76,8 +81,8 @@ function CommunityPage() {
         </div>
       </section>
 
-      <section className="bg-cream py-16">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-6">
+      <section className="bg-cream py-12 sm:py-16">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-4 sm:px-6">
           <div>
             <p className="text-xs font-bold tracking-widest text-lime">SIAP JADI BAGIAN?</p>
             <h3 className="mt-1 text-3xl font-extrabold italic text-navy">Yuk, Jadi Bagian dari <span className="text-lime">Ingenious</span>!</h3>
